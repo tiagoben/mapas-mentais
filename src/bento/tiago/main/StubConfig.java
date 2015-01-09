@@ -4,10 +4,10 @@ import java.io.File;
 
 public class StubConfig {
 	
-	private static int maxLeituraDiaria = 20;
+	private static int maxLeituraDiaria = 25;
 	private static int maxLeituraSemanal = 6;
 	
-	private static String raiz = "C:\\Users\\Tiago\\Google Drive\\Mapas Mentais\\Caixas";
+	private static String raiz = "C:\\Users\\Tiago\\Google Drive\\Mapas Mentais\\Caixas-concurso";
 //	private static String raiz = "C:\\Users\\Tiago\\Google Drive\\Concursos\\Mapas Mentais\\Mapinhas";
 //	private static String raiz = "D:\\testes\\mapasmentais";
 	
