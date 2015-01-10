@@ -81,7 +81,7 @@ public class ManipuladorMapas {
 		try{
 			Document pdfDoc = new Document(new Rectangle(LARGURA_IMAGEM, ALTURA_IMAGEM), 0,0,0,0);
 			LocalDate hoje = LocalDate.now();
-			String nomeArquivo = hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
+			String nomeArquivo = "concursos-"+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
 			PdfWriter.getInstance(pdfDoc, new FileOutputStream(temp.getAbsolutePath() + "\\" + nomeArquivo));
 			pdfDoc.open();
 	
