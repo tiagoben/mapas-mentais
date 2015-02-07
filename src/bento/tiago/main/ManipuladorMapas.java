@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -81,17 +83,32 @@ public class ManipuladorMapas {
 		try{
 			Document pdfDoc = new Document(new Rectangle(LARGURA_IMAGEM, ALTURA_IMAGEM), 0,0,0,0);
 			LocalDate hoje = LocalDate.now();
+			Font fonte = new Font(Font.FontFamily.HELVETICA, 50);
 			String nomeArquivo = "concursos-"+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
 			PdfWriter.getInstance(pdfDoc, new FileOutputStream(temp.getAbsolutePath() + "\\" + nomeArquivo));
 			pdfDoc.open();
 	
+			if(!Logger.getLog().isEmpty()){
+				pdfDoc.add(new Paragraph(Logger.getLog(), fonte));
+				pdfDoc.newPage();
+			}
+			
 			for(File arquivoImagem: listaArquivosImagens){
 				try {
 					Image imagem = Image.getInstance(arquivoImagem.getAbsolutePath());
-					float scaler = ((pdfDoc.getPageSize().getWidth() - pdfDoc.leftMargin()
-							- pdfDoc.rightMargin()) / imagem.getWidth()) * 100;
-					imagem.scalePercent(scaler);
+					float scaler = (
+							(pdfDoc.getPageSize().getHeight() - pdfDoc.bottomMargin() - pdfDoc.topMargin()) 
+							/ imagem.getHeight()) * 100;
 					
+//					Esticar pelo comprimento
+//					float scaler = (
+//							(pdfDoc.getPageSize().getWidth() - pdfDoc.leftMargin() - pdfDoc.rightMargin()) 
+//							/ imagem.getWidth()) * 100;
+//					imagem.scalePercent(scaler);
+					
+					imagem.scalePercent(scaler);
+					imagem.setAlignment(Element.ALIGN_CENTER);
+
 					pdfDoc.add(imagem);
 					pdfDoc.newPage();
 				} catch (IOException e) {
@@ -99,7 +116,11 @@ public class ManipuladorMapas {
 					// e.printStackTrace();
 				}
 			}
-			pdfDoc.add(new Paragraph("Fim :-D"));
+			
+			Paragraph fim = new Paragraph("Acabou ;)", fonte);
+			fim.setAlignment(Element.ALIGN_CENTER);
+			fim.setAlignment(Element.ALIGN_MIDDLE);
+			pdfDoc.add(fim);
 			
 			
 			pdfDoc.close();

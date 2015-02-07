@@ -41,8 +41,8 @@ public class Teste {
 //		
 //		System.out.println(dias);
 		
-		File pasta1 = new File("D:\\testes\\mapasmentais\\RUP - Início");
-		File pasta2 = new File("D:\\testes\\mapasmentais\\RUP-Conceitos Básicos");
+		File pasta1 = new File("D:\\testes\\mapasmentais\\RUP - Inï¿½cio");
+		File pasta2 = new File("D:\\testes\\mapasmentais\\RUP-Conceitos Bï¿½sicos");
 		
 		ArrayList<File> listaArquivos = new ArrayList<File>();
 		

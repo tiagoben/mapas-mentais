@@ -39,15 +39,15 @@ public class Controle {
 					countMapas = countMapas + qtdMapas;
 				}
 
-				System.out.println(countMapas + " mapas em "
+				Logger.info(countMapas + " mapas em "
 						+ nomesPastas.size() + " pastas transferidos de "
 						+ caixaOrigem.getNome() + " para "
 						+ caixaDestino.getNome());
 
 				for (String s : nomesPastas) {
-					System.out.println("\t" + s);
+					Logger.info("\t" + s);
 				}
-				System.out.println();
+				Logger.info("\n");
 			}
 		}
 		System.out.println("Transferências entre caixas concluída");
