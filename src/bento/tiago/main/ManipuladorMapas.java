@@ -88,10 +88,7 @@ public class ManipuladorMapas {
 			PdfWriter.getInstance(pdfDoc, new FileOutputStream(temp.getAbsolutePath() + "\\" + nomeArquivo));
 			pdfDoc.open();
 	
-			if(!Logger.getLog().isEmpty()){
-				pdfDoc.add(new Paragraph(Logger.getLog(), fonte));
-				pdfDoc.newPage();
-			}
+			
 			
 			for(File arquivoImagem: listaArquivosImagens){
 				try {
@@ -99,12 +96,6 @@ public class ManipuladorMapas {
 					float scaler = (
 							(pdfDoc.getPageSize().getHeight() - pdfDoc.bottomMargin() - pdfDoc.topMargin()) 
 							/ imagem.getHeight()) * 100;
-					
-//					Esticar pelo comprimento
-//					float scaler = (
-//							(pdfDoc.getPageSize().getWidth() - pdfDoc.leftMargin() - pdfDoc.rightMargin()) 
-//							/ imagem.getWidth()) * 100;
-//					imagem.scalePercent(scaler);
 					
 					imagem.scalePercent(scaler);
 					imagem.setAlignment(Element.ALIGN_CENTER);
@@ -117,11 +108,16 @@ public class ManipuladorMapas {
 				}
 			}
 			
-			Paragraph fim = new Paragraph("Acabou ;)", fonte);
-			fim.setAlignment(Element.ALIGN_CENTER);
-			fim.setAlignment(Element.ALIGN_MIDDLE);
-			pdfDoc.add(fim);
+			String txt;
 			
+			if(Logger.getLog().isEmpty()){
+				txt = "Acabou ;)";
+			} else {
+				txt = Logger.getLog();
+			}
+			
+			Paragraph fim = new Paragraph(txt, fonte);
+			pdfDoc.add(fim);
 			
 			pdfDoc.close();
 			System.out.println(listaArquivosImagens.size()+" mapas para hoje... :-)");
