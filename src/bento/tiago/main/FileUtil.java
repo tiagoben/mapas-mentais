@@ -2,6 +2,10 @@ package bento.tiago.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class FileUtil {
 	
@@ -30,6 +34,13 @@ public class FileUtil {
 		}
 		
 		return arquivo;
+	}
+	
+	public static LocalDate getDataModificacao(File arquivo){
+		Instant instant = Instant.ofEpochMilli(arquivo.lastModified());
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+		LocalDate localDate = localDateTime.toLocalDate();
+		return localDate;
 	}
 
 }

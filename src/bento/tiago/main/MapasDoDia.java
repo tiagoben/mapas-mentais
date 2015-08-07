@@ -1,8 +1,9 @@
 package bento.tiago.main;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MapasDoDia {
 	public void prepararMapasDoDia(File saida) {
@@ -12,8 +13,7 @@ public class MapasDoDia {
 			boolean incluiuCaixa = false;
 			for (Materia m : caixa.getListaMaterias()) {
 				int qtdLeitura = m.getQtdLeitura();
-				int diasDecorridos = (int) Data.diasDecorridos(m
-						.getDataUltimaLeitura());
+				int diasDecorridos = Period.between(m.getDataUltimaLeitura(), LocalDate.now()).getDays(); 
 
 				if (caixa == EnumCaixas.DIARIA) {
 					if(!incluiuCaixa){
@@ -23,7 +23,7 @@ public class MapasDoDia {
 					}
 					File pasta = caixa.formarPastaMateria(m.getNome());
 					pastasDeHoje.add(pasta);
-					m.setDataUltimaLeitura(Calendar.getInstance());
+					m.setDataUltimaLeitura(LocalDate.now());
 				} else {
 					if(diasDecorridos == 0){
 						if(!incluiuCaixa){
@@ -45,7 +45,7 @@ public class MapasDoDia {
 						pastasDeHoje.add(pasta);
 						qtdLeitura++;
 						m.setQtdLeitura(qtdLeitura);
-						m.setDataUltimaLeitura(Calendar.getInstance());
+						m.setDataUltimaLeitura(LocalDate.now());
 					}
 				}
 

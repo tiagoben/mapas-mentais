@@ -1,11 +1,11 @@
 package bento.tiago.main;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 public class Materia {
 	private String nome;
 	private int qtdLeitura;
-	private Calendar dataUltimaLeitura;
+	private LocalDate dataUltimaLeitura;
 
 	public String getNome() {
 		return nome;
@@ -23,11 +23,11 @@ public class Materia {
 		this.qtdLeitura = qtdLeitura;
 	}
 
-	public Calendar getDataUltimaLeitura() {
+	public LocalDate getDataUltimaLeitura() {
 		return dataUltimaLeitura;
 	}
 
-	public void setDataUltimaLeitura(Calendar dataUltimaLeitura) {
+	public void setDataUltimaLeitura(LocalDate dataUltimaLeitura) {
 		this.dataUltimaLeitura = dataUltimaLeitura;
 	}
 

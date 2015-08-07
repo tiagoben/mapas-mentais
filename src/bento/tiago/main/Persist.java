@@ -8,8 +8,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import static bento.tiago.main.FileUtil.*;
 
 public class Persist {
@@ -87,52 +94,26 @@ public class Persist {
 		}
 	}
 
-	public ArrayList<Materia> lerListaMaterias(EnumCaixas caixa) {
+	public List<Materia> lerListaMaterias(EnumCaixas caixa) {
 		Config config = ConfigLoader.getConfig();
 		
-		ArrayList<Materia> listaMaterias = new ArrayList<Materia>();
+		List<Materia> listaMaterias = new ArrayList<Materia>();
 
-		File arquivo = getArquivo(config.getPastaMetadados(), caixa.getArquivoMaterias());
+		File jsonMaterias = getArquivo(config.getPastaMetadados(), caixa.getArquivoMaterias());
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(arquivo));
-			String linha = "";
-
-			while ((linha = br.readLine()) != null) {
-				linha = linha.trim();
-				if (!linha.equals("")) {
-					StringTokenizer tokenizer = new StringTokenizer(linha, "\t");
-					String nome = tokenizer.nextToken();
-
-					Calendar data = Calendar.getInstance();
-					Data.zeroHora(data);
-					try {
-						data = Data.getCalendar(tokenizer.nextToken());
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-
-					int leituras = 0;
-					try {
-						leituras = Integer.parseInt(tokenizer.nextToken());
-					} catch (Exception ex) {
-
-					}
-					
-					Materia m = new Materia();
-					m.setNome(nome);
-					m.setDataUltimaLeitura(data);
-					m.setQtdLeitura(leituras);
-					
-					String caminhoTeste = EnumCaixas.getCaminhoCaixas()+"\\"+caixa.getNome()+"\\"+m.getNome();
-					File arquivoTeste = new File(caminhoTeste);
-					if(arquivoTeste.exists()){
-						listaMaterias.add(m);
-					}
-
-				}
+			BufferedReader br = new BufferedReader(new FileReader(jsonMaterias));
+			
+			Materia[] array = new Gson().fromJson(br, Materia[].class);
+			if(array != null){
+				List<Materia> materiasLidas = new ArrayList<>(Arrays.asList(array));
+				
+				listaMaterias = materiasLidas.stream()
+					.filter(m -> pastaMateriaExiste(caixa, m))
+					.collect(Collectors.toList());
 			}
 			br.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -141,29 +122,26 @@ public class Persist {
 
 		return listaMaterias;
 	}
+
+	private boolean pastaMateriaExiste(EnumCaixas caixa, Materia m) {
+		String caminhoArquivo = EnumCaixas.getCaminhoCaixas()+"\\"+caixa.getNome()+"\\"+m.getNome();
+		File arquivo = new File(caminhoArquivo);
+		return arquivo.exists();
+	}
 	
 	public void salvarListaMaterias(EnumCaixas caixa){
 		Config config = ConfigLoader.getConfig();
 		
-		String caminho = config.getPastaMetadados() + "\\"
-		+ caixa.getArquivoMaterias();
+		String caminho = config.getPastaMetadados() + "\\" + caixa.getArquivoMaterias();
 		File arquivo = new File(caminho);
 		
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo));
-			for(Materia m: caixa.getListaMaterias()){
-				String data = Data.getDataFormatada(m.getDataUltimaLeitura());
-				
-				bw.write(m.getNome());
-				bw.write("\t");
-				bw.write(data);
-				bw.write("\t");
-				bw.write(""+m.getQtdLeitura());
-				bw.newLine();
-			}
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			String json = gson.toJson(caixa.getListaMaterias());
+			bw.write(json);
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -174,5 +152,4 @@ public class Persist {
 			salvarListaMaterias(caixa);
 		}
 	}
-
 }
