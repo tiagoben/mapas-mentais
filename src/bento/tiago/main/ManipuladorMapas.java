@@ -60,6 +60,7 @@ public class ManipuladorMapas {
 	}
 	
 	public void criarPDF(ArrayList<File> pastas, File saida) { 
+		Config config = ConfigLoader.getConfig();
 		ArrayList<File> listaArquivosImagens = new ArrayList<File>();
 
 		for (File p : pastas) {
@@ -79,7 +80,7 @@ public class ManipuladorMapas {
 			Document pdfDoc = new Document(new Rectangle(LARGURA_IMAGEM, ALTURA_IMAGEM), 0,0,0,0);
 			LocalDate hoje = LocalDate.now();
 			Font fonte = new Font(Font.FontFamily.HELVETICA, 50);
-			String nomeArquivo = "concursos-"+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
+			String nomeArquivo = config.getPrefixoArquivoSaida()+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
 			PdfWriter.getInstance(pdfDoc, new FileOutputStream(saida.getAbsolutePath() + "\\" + nomeArquivo));
 			pdfDoc.open();
 	
@@ -98,8 +99,7 @@ public class ManipuladorMapas {
 					pdfDoc.add(imagem);
 					pdfDoc.newPage();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					// e.printStackTrace();
+					 e.printStackTrace();
 				}
 			}
 			

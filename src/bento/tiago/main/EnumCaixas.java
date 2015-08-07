@@ -11,10 +11,10 @@ public enum EnumCaixas {
 	SEMESTRAL(180, 2),
 	ANUAL(365, 100);
 	
-	private String nome = this.toString();
+	private String nome = this.toString().toLowerCase();
 	private ArrayList<Materia> materias = new ArrayList<Materia>();;
 	private static String caminhoCaixas;
-	private String arquivoMaterias = nome.toLowerCase()+".txt";
+	private String arquivoMaterias = nome.toLowerCase()+".json";
 	private int intervaloDias;
 	private int maxLeituras;
 	

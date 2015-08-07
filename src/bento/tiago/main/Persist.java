@@ -1,5 +1,7 @@
 package bento.tiago.main;
 
+import static bento.tiago.main.FileUtil.getArquivo;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,15 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import static bento.tiago.main.FileUtil.*;
 
 public class Persist {
 	private static Persist persist;
