@@ -1,22 +1,17 @@
 package bento.tiago.main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -64,7 +59,7 @@ public class ManipuladorMapas {
 		System.out.println(arquivosDesenho.size()+" mapas para hoje... :-)");
 	}
 	
-	public void criarPDF(ArrayList<File> pastas, File temp) { 
+	public void criarPDF(ArrayList<File> pastas, File saida) { 
 		ArrayList<File> listaArquivosImagens = new ArrayList<File>();
 
 		for (File p : pastas) {
@@ -85,7 +80,7 @@ public class ManipuladorMapas {
 			LocalDate hoje = LocalDate.now();
 			Font fonte = new Font(Font.FontFamily.HELVETICA, 50);
 			String nomeArquivo = "concursos-"+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
-			PdfWriter.getInstance(pdfDoc, new FileOutputStream(temp.getAbsolutePath() + "\\" + nomeArquivo));
+			PdfWriter.getInstance(pdfDoc, new FileOutputStream(saida.getAbsolutePath() + "\\" + nomeArquivo));
 			pdfDoc.open();
 	
 			
@@ -151,54 +146,5 @@ public class ManipuladorMapas {
 			}
 		}
 		return listaPastas;
-	}
-	
-	// public void moverPasta(File origem, File destino){
-	// Path pathOrigem = origem.toPath();
-	// Path pathDestino = destino.toPath();
-	//
-	// try {
-	// Files.move(pathOrigem, pathDestino, StandardCopyOption.REPLACE_EXISTING);
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	
-	public static void main(String[] args) throws MalformedURLException,  DocumentException, FileNotFoundException {
-		LocalTime antes = LocalTime.now();
-
-		Document pdfDoc = new Document(new Rectangle(1366, 768), 0,0,0,0);
-		try {
-			PdfWriter.getInstance(pdfDoc, new FileOutputStream("C:\\Users\\Tiago\\desktop\\arquivo.pdf"));
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pdfDoc.open();
-		File pasta = new File("C:\\Users\\Tiago\\Google Drive\\Concursos\\Mapas Mentais\\Mapinhas\\Mapas do dia");
-		for(File f: pasta.listFiles()){
-			
-			Image imagem;
-			try {
-				imagem = Image.getInstance(f.getAbsolutePath());
-				float scaler = ((pdfDoc.getPageSize().getWidth() - pdfDoc.leftMargin()
-						- pdfDoc.rightMargin()) / imagem.getWidth()) * 100;
-				imagem.scalePercent(scaler);
-				
-				pdfDoc.add(imagem);
-				pdfDoc.newPage();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				// e.printStackTrace();
-			}
-		}
-		LocalTime depois = LocalTime.now();
-		
-		Duration duration = Duration.between(antes, depois);
-		
-		pdfDoc.close();
-		System.out.println("Done in " + duration.getSeconds()+ " seconds");
-		
-	}
+	}		
 }

@@ -1,13 +1,11 @@
 package bento.tiago.main;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MapasDoDia {
-	public void prepararMapasDoDia(File temp) {
+	public void prepararMapasDoDia(File saida) {
 		ArrayList<File> pastasDeHoje = new ArrayList<File>();
 
 		for (EnumCaixas caixa : EnumCaixas.values()) {
@@ -55,18 +53,9 @@ public class MapasDoDia {
 		}
 
 		ManipuladorMapas mm = new ManipuladorMapas();
-		mm.criarPDF(pastasDeHoje, temp);
+		mm.criarPDF(pastasDeHoje, saida);
 		
 //		abrirPasta(temp);
 	}
 	
-	@SuppressWarnings("unused")
-	private void abrirPasta(File temp) {
-		try {
-			Desktop.getDesktop().open(temp);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

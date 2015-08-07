@@ -1,34 +1,88 @@
 package bento.tiago.main;
 
-import java.io.File;
-
 public class Config {
-	private File arquivoCatalogoPastas;
-	private File pastaTemporaria;
-	private File pastaConfig;
-
-	public File getArquivoCatalogoPastas() {
-		return arquivoCatalogoPastas;
+	private String pastaMetadados = "./metadados";
+	private String pastaEntrada = "./entrada";
+	private String pastaOutrosArquivos = "./outros";
+	private String pastaSaida = "./saida";
+	private String pastaCaixas = "./";
+	private String arquivoCatalogo = "catalogo.txt";
+	private int maxLeituraDiaria = EnumCaixas.DIARIA.getMaxLeituras();
+	private int maxLeituraSemanal = EnumCaixas.SEMANAL.getMaxLeituras();
+	private int maxLeituraQuinzenal = EnumCaixas.QUINZENAL.getMaxLeituras();
+	private int maxLeituraMensal = EnumCaixas.MENSAL.getMaxLeituras();
+	private int maxLeituraSemestral = EnumCaixas.SEMESTRAL.getMaxLeituras();
+	private int maxLeituraAnual = EnumCaixas.ANUAL.getMaxLeituras();
+	public String getPastaMetadados() {
+		return pastaMetadados;
 	}
-
-	public void setArquivoCatalogoPastas(File arquivoCatalogoPastas) {
-		this.arquivoCatalogoPastas = arquivoCatalogoPastas;
+	public void setPastaMetadados(String pastaMetadados) {
+		this.pastaMetadados = pastaMetadados;
 	}
-
-	public File getPastaTemporaria() {
-		return pastaTemporaria;
+	public String getPastaEntrada() {
+		return pastaEntrada;
 	}
-
-	public void setPastaTemporaria(File pastaTemporaria) {
-		this.pastaTemporaria = pastaTemporaria;
+	public void setPastaEntrada(String pastaEntrada) {
+		this.pastaEntrada = pastaEntrada;
 	}
-
-	public File getPastaConfig() {
-		return pastaConfig;
+	public String getPastaOutrosArquivos() {
+		return pastaOutrosArquivos;
 	}
-
-	public void setPastaConfig(File pastaConfig) {
-		this.pastaConfig = pastaConfig;
-	}	
-	
+	public void setPastaOutrosArquivos(String pastaOutrosArquivos) {
+		this.pastaOutrosArquivos = pastaOutrosArquivos;
+	}
+	public String getPastaSaida() {
+		return pastaSaida;
+	}
+	public void setPastaSaida(String pastaSaida) {
+		this.pastaSaida = pastaSaida;
+	}
+	public String getPastaCaixas() {
+		return pastaCaixas;
+	}
+	public void setPastaCaixas(String pastaCaixas) {
+		this.pastaCaixas = pastaCaixas;
+	}
+	public String getArquivoCatalogo() {
+		return arquivoCatalogo;
+	}
+	public void setArquivoCatalogo(String arquivoCatalogo) {
+		this.arquivoCatalogo = arquivoCatalogo;
+	}
+	public int getMaxLeituraDiaria() {
+		return maxLeituraDiaria;
+	}
+	public void setMaxLeituraDiaria(int maxLeituraDiaria) {
+		this.maxLeituraDiaria = maxLeituraDiaria;
+	}
+	public int getMaxLeituraSemanal() {
+		return maxLeituraSemanal;
+	}
+	public void setMaxLeituraSemanal(int maxLeituraSemanal) {
+		this.maxLeituraSemanal = maxLeituraSemanal;
+	}
+	public int getMaxLeituraQuinzenal() {
+		return maxLeituraQuinzenal;
+	}
+	public void setMaxLeituraQuinzenal(int maxLeituraQuinzenal) {
+		this.maxLeituraQuinzenal = maxLeituraQuinzenal;
+	}
+	public int getMaxLeituraMensal() {
+		return maxLeituraMensal;
+	}
+	public void setMaxLeituraMensal(int maxLeituraMensal) {
+		this.maxLeituraMensal = maxLeituraMensal;
+	}
+	public int getMaxLeituraSemestral() {
+		return maxLeituraSemestral;
+	}
+	public void setMaxLeituraSemestral(int maxLeituraSemestral) {
+		this.maxLeituraSemestral = maxLeituraSemestral;
+	}
+	public int getMaxLeituraAnual() {
+		return maxLeituraAnual;
+	}
+	public void setMaxLeituraAnual(int maxLeituraAnual) {
+		this.maxLeituraAnual = maxLeituraAnual;
+	}
 }

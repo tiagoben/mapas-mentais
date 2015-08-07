@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
+import static bento.tiago.main.FileUtil.*;
 
 public class Persist {
 	private static Persist persist;
-	private Config config;
 	private ArrayList<String> catalogoPastas;
 
 	private Persist() {
@@ -27,16 +27,14 @@ public class Persist {
 		return persist;
 	}
 
-	public void setConfig(Config config) {
-		this.config = config;
-	}
-
 	public ArrayList<String> lerCatalogoPastas() {
+		Config config = ConfigLoader.getConfig();
+		
 		if (catalogoPastas == null) {
 			catalogoPastas = new ArrayList<String>();
 		}
 		catalogoPastas.clear();
-		File arquivoOrdemPastas = config.getArquivoCatalogoPastas();
+		File arquivoOrdemPastas = getArquivo(config.getPastaMetadados(), config.getArquivoCatalogo());
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(
@@ -60,11 +58,13 @@ public class Persist {
 	}
 
 	public void salvarCatalogoPastas() {
+		Config config = ConfigLoader.getConfig();
+		
 		if (catalogoPastas == null) {
 			return;
 		}
 
-		File arquivoCatalogoPastas = config.getArquivoCatalogoPastas();
+		File arquivoCatalogoPastas = getArquivo(config.getPastaMetadados(), config.getArquivoCatalogo());
 
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(
@@ -88,11 +88,11 @@ public class Persist {
 	}
 
 	public ArrayList<Materia> lerListaMaterias(EnumCaixas caixa) {
+		Config config = ConfigLoader.getConfig();
+		
 		ArrayList<Materia> listaMaterias = new ArrayList<Materia>();
 
-		String caminho = config.getPastaConfig() + "\\"
-				+ caixa.getArquivoMaterias();
-		File arquivo = new File(caminho);
+		File arquivo = getArquivo(config.getPastaMetadados(), caixa.getArquivoMaterias());
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(arquivo));
@@ -143,7 +143,9 @@ public class Persist {
 	}
 	
 	public void salvarListaMaterias(EnumCaixas caixa){
-		String caminho = config.getPastaConfig() + "\\"
+		Config config = ConfigLoader.getConfig();
+		
+		String caminho = config.getPastaMetadados() + "\\"
 		+ caixa.getArquivoMaterias();
 		File arquivo = new File(caminho);
 		

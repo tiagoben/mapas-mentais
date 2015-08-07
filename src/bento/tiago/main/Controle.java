@@ -1,7 +1,9 @@
 package bento.tiago.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import static bento.tiago.main.FileUtil.*;
 
 public class Controle {
 
@@ -9,7 +11,15 @@ public class Controle {
 		System.out.println("Iniciando a manipulação de Mapas Mentais");
 		
 		System.out.println("Carregando configurações");
-		Config config = StubConfig.getConfig();
+		Config config = ConfigLoader.getConfig();
+		
+		System.out.println("Recebendo mapas");
+		try {
+			new Entrada().receberMapas();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		for (EnumCaixas caixa : EnumCaixas.values()) {
 			InicializadorCaixas.init(caixa);
@@ -20,9 +30,8 @@ public class Controle {
 			EnumCaixas caixaOrigem = EnumCaixas.values()[i];
 			EnumCaixas caixaDestino = EnumCaixas.values()[i + 1];
 			int maxLeituras = caixaOrigem.getMaxLeituras();
-			ArrayList<Materia> transferidos = ControleCaixas
-					.transferirMaterias(caixaOrigem, caixaDestino, maxLeituras,
-							true);
+			ArrayList<Materia> transferidos = 
+					ControleCaixas.transferirMaterias(caixaOrigem, caixaDestino, maxLeituras,true);
 
 			if (transferidos.size() > 0) {
 
@@ -54,7 +63,7 @@ public class Controle {
 
 		System.out.println("Preparando mapas para o dia");
 		MapasDoDia mdd = new MapasDoDia();
-		mdd.prepararMapasDoDia(config.getPastaTemporaria());
+		mdd.prepararMapasDoDia(getPasta(config.getPastaSaida()));
 
 		System.out.println("\n\nPersistindo dados de configuração");
 		Persist.getInstance().salvarTudo();

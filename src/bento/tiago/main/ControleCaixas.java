@@ -51,21 +51,4 @@ public class ControleCaixas {
 
 		return areaTransferencia;
 	}
-	
-	public static void main(String[] args) {
-		EnumCaixas.setCaminhoCaixas("D:\\testes\\mapasmentais\\Caixas");
-		
-		Materia m = new Materia();
-		m.setNome("Scrum");
-		m.setQtdLeitura(20);
-
-		EnumCaixas.DIARIA.addMateria(m);
-		
-		ArrayList<Materia> areaTransf = ControleCaixas.transferirMaterias(EnumCaixas.DIARIA, EnumCaixas.SEMANAL, 20, true);
-		
-		for(Materia mat: areaTransf){
-			System.out.println(mat.getNome()+", "+mat.getQtdLeitura());
-		}
-		
-	}
 }

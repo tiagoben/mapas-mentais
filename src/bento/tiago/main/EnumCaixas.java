@@ -13,7 +13,7 @@ public enum EnumCaixas {
 	
 	private String nome = this.toString();
 	private ArrayList<Materia> materias = new ArrayList<Materia>();;
-	private static String caminhoCaixas = "c:\\";
+	private static String caminhoCaixas;
 	private String arquivoMaterias = nome.toLowerCase()+".txt";
 	private int intervaloDias;
 	private int maxLeituras;
@@ -40,8 +40,8 @@ public enum EnumCaixas {
 	}
 
 	public File getPasta(){
-		String caminho = getCaminhoCaixas() + "\\" + getNome();
-		File pasta = new File(caminho);
+		String caminho = getCaminhoCaixas() + "/" + getNome();
+		File pasta = FileUtil.getPasta(caminho);
 		return pasta;
 	}
 
@@ -59,7 +59,7 @@ public enum EnumCaixas {
 	
 	public File formarPastaMateria(String nome){
 		String caminho = getPasta()+"\\"+nome;
-		File pastaFormada = new File(caminho);
+		File pastaFormada = FileUtil.getPasta(caminho);
 		return pastaFormada;
 	}	
 
@@ -80,7 +80,9 @@ public enum EnumCaixas {
 	}
 
 	public void setMaxLeituras(int maxLeituras) {
-		this.maxLeituras = maxLeituras;
+		if(maxLeituras>0){
+			this.maxLeituras = maxLeituras;
+		}
 	}
 
 	
