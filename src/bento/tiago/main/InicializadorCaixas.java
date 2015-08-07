@@ -7,28 +7,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InicializadorCaixas {
-	public static void init(EnumCaixas caixa){
-		caixa.getListaMaterias().clear();
-		
-		Persist persist = Persist.getInstance();
-		List<Materia> materias = persist.lerListaMaterias(caixa);
-		
-		List<String> nomesMateriais = materias.stream()
-				.map(Materia::getNome)
-				.collect(Collectors.toList());
-		
+	public static void carregarMaterias(){
 		ArrayList<String> catalogo = Persist.getInstance().obterCatalogoPastas();
-		
-		catalogo.stream()
-			.filter(item -> !nomesMateriais.contains(item))
-			.filter(item -> new File(caixa.getPasta()+"/"+item).isDirectory())
-			.forEach(item ->{
-				Materia novaMateria = new Materia();
-				novaMateria.setNome(item);
-				novaMateria.setQtdLeitura(0);
-				novaMateria.setDataUltimaLeitura(LocalDate.now().minusDays(1));
-				materias.add(novaMateria);
-			});
-		materias.forEach(m -> caixa.addMateria(m));
+
+		for (EnumCaixas caixa : EnumCaixas.values()) {
+			caixa.getListaMaterias().clear();
+			
+			Persist persist = Persist.getInstance();
+			List<Materia> materias = persist.lerListaMaterias(caixa);
+			
+			List<String> nomesMateriais = materias.stream()
+					.map(Materia::getNome)
+					.collect(Collectors.toList());
+			
+			
+			catalogo.stream()
+				.filter(item -> !nomesMateriais.contains(item))
+				.filter(item -> new File(caixa.getPasta()+"/"+item).isDirectory())
+				.forEach(item ->{
+					Materia novaMateria = new Materia();
+					novaMateria.setNome(item);
+					novaMateria.setQtdLeitura(0);
+					novaMateria.setDataUltimaLeitura(LocalDate.now().minusDays(1));
+					materias.add(novaMateria);
+				});
+			materias.forEach(m -> caixa.addMateria(m));
+		}
 	}
 }

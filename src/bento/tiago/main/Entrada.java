@@ -12,34 +12,39 @@ import java.util.List;
 
 public class Entrada {
 	
-	public void receberMapas() throws IOException{
+	public static void receberMapas(){
 		Config config = ConfigLoader.getConfig();
 		
 		File pastaEntrada = FileUtil.getPasta(config.getPastaEntrada());
 		File pastaOutrosArquivos = FileUtil.getPasta(config.getPastaOutrosArquivos());
 		
 		File catalogo = FileUtil.getArquivo(config.getPastaMetadados(), config.getArquivoCatalogo());
-		BufferedWriter bw = new BufferedWriter(new FileWriter(catalogo, true));
+		BufferedWriter bw;
+		try {
+			bw = new BufferedWriter(new FileWriter(catalogo, true));
+			List<File> conteudoPastaEntrada = Arrays.asList(pastaEntrada.listFiles());
+			
+			conteudoPastaEntrada.stream()
+				.filter(File::isDirectory)
+				.sorted(Comparator.comparingLong(File::lastModified))
+				.forEach((File materia) -> {
+					adicionarComoMateria(materia, bw);
+				});
+			
+			conteudoPastaEntrada.stream()
+				.filter(File::isFile)
+				.forEach((File arquivo) -> {
+					moverOutroArquivo(arquivo, pastaOutrosArquivos);
+				});
+			
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		List<File> conteudoPastaEntrada = Arrays.asList(pastaEntrada.listFiles());
-		
-		conteudoPastaEntrada.stream()
-			.filter(File::isDirectory)
-			.sorted(Comparator.comparingLong(File::lastModified))
-			.forEach((File materia) -> {
-				adicionarComoMateria(materia, bw);
-			});
-		
-		conteudoPastaEntrada.stream()
-			.filter(File::isFile)
-			.forEach((File arquivo) -> {
-				moverOutroArquivo(arquivo, pastaOutrosArquivos);
-			});
-		
-		bw.close();
 	}
 	
-	private void adicionarComoMateria(File materia, BufferedWriter bw){
+	private static void adicionarComoMateria(File materia, BufferedWriter bw){
 		try {
 			File destino = new File(EnumCaixas.DIARIA.getPasta(), materia.getName());
 			bw.newLine();
@@ -50,7 +55,7 @@ public class Entrada {
 		}
 	}
 	
-	private void moverOutroArquivo(File arquivo, File destino){
+	private static void moverOutroArquivo(File arquivo, File destino){
 		destino = new File(destino, arquivo.getName());
 		try {
 			Files.move(arquivo.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);

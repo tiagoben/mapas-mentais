@@ -1,5 +1,6 @@
 package bento.tiago.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +11,41 @@ import java.util.List;
 
 
 public class ControleCaixas {
+	public static void executarTransferencias() {
+		for (int i = 0; i < EnumCaixas.values().length - 1; i++) {
+			EnumCaixas caixaOrigem = EnumCaixas.values()[i];
+			EnumCaixas caixaDestino = EnumCaixas.values()[i + 1];
+			int maxLeituras = caixaOrigem.getMaxLeituras();
+			ArrayList<Materia> transferidos = ControleCaixas.transferirMaterias(caixaOrigem, caixaDestino, maxLeituras,true);
+
+			if (transferidos.size() > 0) {
+
+				int countMapas = 0;
+				ArrayList<String> nomesPastas = new ArrayList<String>();
+
+				for (Materia m : transferidos) {
+					File f = caixaDestino.formarPastaMateria(m.getNome());
+					int qtdMapas = f.list().length;
+
+					String s = m.getNome() + " (" + qtdMapas + ")";
+					nomesPastas.add(s);
+
+					countMapas = countMapas + qtdMapas;
+				}
+
+				Logger.info(countMapas + " mapas em "
+						+ nomesPastas.size() + " pastas transferidos de "
+						+ caixaOrigem.getNome() + " para "
+						+ caixaDestino.getNome());
+
+				for (String s : nomesPastas) {
+					Logger.info("\t" + s);
+				}
+				Logger.info("\n");
+			}
+		}
+	}
+	
 	public static ArrayList<Materia> transferirMaterias(
 			EnumCaixas caixaOrigem, EnumCaixas caixaDestino, int maxLeitura,
 			boolean commit) {
