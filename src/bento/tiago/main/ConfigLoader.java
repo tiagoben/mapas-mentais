@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,6 +15,7 @@ public class ConfigLoader {
 	
 	private static final String ARQUIVO_CONFIG = "config.json";
 	private static Config config;
+	final static Logger logger = Logger.getLogger(ConfigLoader.class);
 	
 	public static Config getConfig(){
 		if(config==null){
@@ -48,8 +51,7 @@ public class ConfigLoader {
 			bw.write(jsonConfig);
 			bw.close();
 		} catch (IOException e) {
-			System.out.println("Erro ao tentar gravar arquivo de configuração padrão.");
-			e.printStackTrace();
+			logger.error("Erro ao tentar gravar arquivo de configuração padrão.", e);
 		}
 		
 		return config;

@@ -7,7 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.apache.log4j.Logger;
+
 public class FileUtil {
+	
+	final static Logger logger = Logger.getLogger(FileUtil.class);
 	
 	public static File getPasta(String pasta){
 		File pastaFile = new File(pasta);
@@ -29,7 +33,7 @@ public class FileUtil {
 			try {
 				arquivo.createNewFile();
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Erro ao criar arquivo "+arquivo.getAbsolutePath(), e);
 			}
 		}
 		

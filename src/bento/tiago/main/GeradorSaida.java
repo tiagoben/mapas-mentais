@@ -64,7 +64,7 @@ public class GeradorSaida {
 					pdfDoc.add(imagem);
 					pdfDoc.newPage();
 				} catch (IOException e) {
-					 e.printStackTrace();
+					logger.error("Erro ao ler arquivo de imagem", e);
 				}
 			}
 			

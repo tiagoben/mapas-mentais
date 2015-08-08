@@ -14,12 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Persist {
 	private static Persist persist;
 	private ArrayList<String> catalogoPastas;
+	final static Logger logger = Logger.getLogger(Persist.class);
 
 	private Persist() {
 
@@ -53,11 +56,9 @@ public class Persist {
 				}
 			}
 			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			logger.error("Erro ao abrir catálogo", e);
+		} 
 
 		return catalogoPastas;
 	}
@@ -80,7 +81,7 @@ public class Persist {
 			}
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Erro ao salvar catálogo", e);
 		}
 	}
 
@@ -112,10 +113,8 @@ public class Persist {
 			}
 			br.close();
 			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}  catch (Exception e) {
+			logger.error("Erro ao abrir lista de matérias", e);
 		}
 
 		return listaMaterias;
@@ -140,7 +139,7 @@ public class Persist {
 			bw.write(json);
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Erro ao salvar lista de matérias", e);
 		}
 	}
 
