@@ -11,7 +11,7 @@ public enum EnumCaixas {
 	SEMESTRAL(180, 2),
 	ANUAL(365, 100);
 	
-	private String nome = this.toString().toLowerCase();
+	private String nome = this.toString();
 	private ArrayList<Materia> materias = new ArrayList<Materia>();;
 	private static String caminhoCaixas;
 	private String arquivoMaterias = nome.toLowerCase()+".json";
@@ -40,7 +40,7 @@ public enum EnumCaixas {
 	}
 
 	public File getPasta(){
-		String caminho = getCaminhoCaixas() + "/" + getNome();
+		String caminho = getCaminhoCaixas() + "/" + getNome().toLowerCase();
 		File pasta = FileUtil.getPasta(caminho);
 		return pasta;
 	}
