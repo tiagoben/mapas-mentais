@@ -15,43 +15,35 @@ public class MapasDoDia {
 			for (Materia m : caixa.getListaMaterias()) {
 				int qtdLeitura = m.getQtdLeitura();
 				int diasDecorridos = Period.between(m.getDataUltimaLeitura(), LocalDate.now()).getDays(); 
-
-				if (caixa == EnumCaixas.DIARIA) {
+				
+				if(diasDecorridos == 0){
 					if(!incluiuCaixa){
 						incluirCaixa(pastasDeHoje, caixa);
 						incluiuCaixa = true;
 					}
-					File pasta = caixa.formarPastaMateria(m.getNome());
-					pastasDeHoje.add(pasta);
+					
+					incluirMateria(pastasDeHoje, caixa, m);
+				} else if (diasDecorridos >= caixa.getIntervaloDias()) {
+					if(!incluiuCaixa){
+						incluirCaixa(pastasDeHoje, caixa);
+						incluiuCaixa = true;
+					}					
+					incluirMateria(pastasDeHoje, caixa, m);
+					
+					qtdLeitura++;
+					m.setQtdLeitura(qtdLeitura);
 					m.setDataUltimaLeitura(LocalDate.now());
-				} else {
-					if(diasDecorridos == 0){
-						if(!incluiuCaixa){
-							incluirCaixa(pastasDeHoje, caixa);
-							incluiuCaixa = true;
-						}
-						
-						File pasta = caixa.formarPastaMateria(m.getNome());
-						pastasDeHoje.add(pasta);
-					} else if (diasDecorridos >= caixa.getIntervaloDias()) {
-						if(!incluiuCaixa){
-							incluirCaixa(pastasDeHoje, caixa);
-							incluiuCaixa = true;
-						}
-						
-						File pasta = caixa.formarPastaMateria(m.getNome());
-						pastasDeHoje.add(pasta);
-						qtdLeitura++;
-						m.setQtdLeitura(qtdLeitura);
-						m.setDataUltimaLeitura(LocalDate.now());
-					}
 				}
-
 			}
 		}
 
 		return pastasDeHoje;
 		
+	}
+
+	private static void incluirMateria(ArrayList<File> pastasDeHoje, EnumCaixas caixa, Materia m) {
+		File materia = caixa.formarPastaMateria(m.getNome());
+		pastasDeHoje.add(materia);
 	}
 
 	private static void incluirCaixa(ArrayList<File> pastasDeHoje, EnumCaixas caixa) {

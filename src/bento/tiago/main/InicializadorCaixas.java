@@ -27,7 +27,7 @@ public class InicializadorCaixas {
 				.forEach(item ->{
 					Materia novaMateria = new Materia();
 					novaMateria.setNome(item);
-					novaMateria.setQtdLeitura(0);
+					novaMateria.setQtdLeitura(1);
 					novaMateria.setDataUltimaLeitura(LocalDate.now().minusDays(1));
 					materias.add(novaMateria);
 				});
