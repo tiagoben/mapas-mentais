@@ -25,6 +25,7 @@ public class ConfigLoader {
 				config = new Gson().fromJson(br, Config.class);
 				br.close();
 			} catch (Exception e){
+				logger.info("Arquivo de configuração não encontrado. Carregando configuração padrão.");
 				config = criarConfiguracaoPadrao();
 			}
 			
