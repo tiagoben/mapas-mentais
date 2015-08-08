@@ -5,6 +5,8 @@ import static bento.tiago.main.FileUtil.getPasta;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class Controle {
 		
 		if(config.isApenasUmArquivoSaida() && existeMapaNaPastaDeSaida()){
 			logger.warn("Você não leu seu último mapa! Remova o arquivo e execute novamente.");	
+			String data = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			String nomeArquivo = config.getPrefixoArquivoSaida()+data+"-missed.txt";
+			FileUtil.getArquivo(config.getPastaSaida(), nomeArquivo);			
 		} else {
 			Entrada.receberMapas();
 			InicializadorCaixas.carregarMaterias();	
