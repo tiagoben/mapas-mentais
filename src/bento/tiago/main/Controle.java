@@ -3,43 +3,49 @@ package bento.tiago.main;
 import static bento.tiago.main.FileUtil.getPasta;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class Controle {
 
+	final static Logger logger = Logger.getLogger(Controle.class);
+	
 	public void run() {
-		System.out.println("Iniciando a manipulação de Mapas Mentais");
+		informacoesIniciais();
 		
-		System.out.println("Carregando configurações");		
 		Config config = ConfigLoader.getConfig();
 		
 		if(existeMapaNaPastaDeSaida()){
-			System.out.println("Você não leu o seu ultimo mapa!");	
+			logger.warn("Você não leu seu último mapa! Remova o arquivo e execute novamente.");	
 		} else {
-			System.out.println("Recebendo mapas");
-			
 			Entrada.receberMapas();
-
-			InicializadorCaixas.carregarMaterias();
-	
-			System.out.println("Iniciando transferências entre caixas");
+			InicializadorCaixas.carregarMaterias();	
 			ControleCaixas.executarTransferencias();
-			System.out.println("Transferências entre caixas concluída");
-	
-			System.out.println("Preparando mapas para o dia");
-			MapasDoDia mdd = new MapasDoDia();
-			mdd.prepararMapasDoDia(getPasta(config.getPastaSaida()));
-	
-			System.out.println("\n\nPersistindo dados de configuração");
+			List<File> pastasDeHoje = MapasDoDia.prepararMapasDoDia();	
+			GeradorSaida.criarPDF(pastasDeHoje, getPasta(config.getPastaSaida()));
 			Persist.getInstance().salvarTudo();
-
 		}
-		System.out.println("Fim da manipulação de Mapas Mentais");
-		System.out.println("==================================================================");
+		logger.info("Fim da manipulação de Mapas Mentais");
+		logger.info("-----------------------------------------------------------------------\n");
 	}
 
-	
+	private void informacoesIniciais(){
+		logger.info("-----------------------------------------------------------------------");
+		
+		try {
+		    InetAddress addr;
+		    addr = InetAddress.getLocalHost();
+		    String hostname = addr.getHostName();
+		    logger.info(hostname);
+		} catch(UnknownHostException ex) {
+		   logger.error("O nome do host não pôde ser identificado", ex);
+		}
+		logger.info("Iniciando a manipulação de Mapas Mentais");
+	}
 	
 	private boolean existeMapaNaPastaDeSaida(){
 		Config config = ConfigLoader.getConfig();

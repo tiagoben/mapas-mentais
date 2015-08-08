@@ -4,9 +4,10 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapasDoDia {
-	public void prepararMapasDoDia(File saida) {
+	public static List<File> prepararMapasDoDia() {
 		ArrayList<File> pastasDeHoje = new ArrayList<File>();
 
 		for (EnumCaixas caixa : EnumCaixas.values()) {
@@ -17,8 +18,7 @@ public class MapasDoDia {
 
 				if (caixa == EnumCaixas.DIARIA) {
 					if(!incluiuCaixa){
-						File pastaCaixa = new File(caixa.getPasta().getAbsolutePath());
-						pastasDeHoje.add(pastaCaixa);
+						incluirCaixa(pastasDeHoje, caixa);
 						incluiuCaixa = true;
 					}
 					File pasta = caixa.formarPastaMateria(m.getNome());
@@ -27,8 +27,7 @@ public class MapasDoDia {
 				} else {
 					if(diasDecorridos == 0){
 						if(!incluiuCaixa){
-							File pastaCaixa = new File(caixa.getPasta().getAbsolutePath());
-							pastasDeHoje.add(pastaCaixa);
+							incluirCaixa(pastasDeHoje, caixa);
 							incluiuCaixa = true;
 						}
 						
@@ -36,8 +35,7 @@ public class MapasDoDia {
 						pastasDeHoje.add(pasta);
 					} else if (diasDecorridos >= caixa.getIntervaloDias()) {
 						if(!incluiuCaixa){
-							File pastaCaixa = new File(caixa.getPasta().getAbsolutePath());
-							pastasDeHoje.add(pastaCaixa);
+							incluirCaixa(pastasDeHoje, caixa);
 							incluiuCaixa = true;
 						}
 						
@@ -52,10 +50,13 @@ public class MapasDoDia {
 			}
 		}
 
-		ManipuladorMapas mm = new ManipuladorMapas();
-		mm.criarPDF(pastasDeHoje, saida);
+		return pastasDeHoje;
 		
-//		abrirPasta(temp);
+	}
+
+	private static void incluirCaixa(ArrayList<File> pastasDeHoje, EnumCaixas caixa) {
+		File pastaCaixa = new File(caixa.getPasta().getAbsolutePath());
+		pastasDeHoje.add(pastaCaixa);
 	}
 	
 }

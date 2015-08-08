@@ -8,10 +8,17 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 
 
 public class ControleCaixas {
+	
+	final static Logger logger = Logger.getLogger(ControleCaixas.class);
+	
 	public static void executarTransferencias() {
+		boolean houveTransferencias = false;
+		
 		for (int i = 0; i < EnumCaixas.values().length - 1; i++) {
 			EnumCaixas caixaOrigem = EnumCaixas.values()[i];
 			EnumCaixas caixaDestino = EnumCaixas.values()[i + 1];
@@ -33,16 +40,21 @@ public class ControleCaixas {
 					countMapas = countMapas + qtdMapas;
 				}
 
-				Logger.info(countMapas + " mapas em "
+				logger.info(countMapas + " mapas em "
 						+ nomesPastas.size() + " pastas transferidos de "
 						+ caixaOrigem.getNome() + " para "
 						+ caixaDestino.getNome());
 
 				for (String s : nomesPastas) {
-					Logger.info("\t" + s);
+					logger.info("\t" + s);
 				}
-				Logger.info("\n");
-			}
+				
+				houveTransferencias = true;
+			} 
+		}
+		
+		if(!houveTransferencias){
+			logger.info("Não houve transferência de matérias entre caixas");
 		}
 	}
 	
@@ -74,17 +86,15 @@ public class ControleCaixas {
 					Files.move(pastaOrigem, pastaDestino,
 							StandardCopyOption.REPLACE_EXISTING);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					// e.printStackTrace();
-					System.err.println("A pasta \"" + m.getNome()
-							+ "\" não pôde ser movida da caixa \""
-							+ caixaOrigem.getNome() + "\" para caixa \""
-							+ caixaDestino.getNome() + "\".");
-					System.err.println(e);
+					String msg = "A pasta \"" + m.getNome()
+					+ "\" não pôde ser movida da caixa \""
+					+ caixaOrigem.getNome() + "\" para caixa \""
+					+ caixaDestino.getNome() + "\"";
+
+					logger.error(msg, e);
 				}
 			}
 		}
-
 		return areaTransferencia;
 	}
 }

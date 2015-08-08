@@ -6,11 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class Entrada {
+	
+	final static Logger logger = Logger.getLogger(Entrada.class);
 	
 	public static void receberMapas(){
 		Config config = ConfigLoader.getConfig();
@@ -20,15 +25,20 @@ public class Entrada {
 		
 		File catalogo = FileUtil.getArquivo(config.getPastaMetadados(), config.getArquivoCatalogo());
 		BufferedWriter bw;
+		
+		List<String> nomesMateriasAdicionadas = new ArrayList<>();
+		
 		try {
 			bw = new BufferedWriter(new FileWriter(catalogo, true));
 			List<File> conteudoPastaEntrada = Arrays.asList(pastaEntrada.listFiles());
+			
 			
 			conteudoPastaEntrada.stream()
 				.filter(File::isDirectory)
 				.sorted(Comparator.comparingLong(File::lastModified))
 				.forEach((File materia) -> {
 					adicionarComoMateria(materia, bw);
+					nomesMateriasAdicionadas.add(materia.getName());
 				});
 			
 			conteudoPastaEntrada.stream()
@@ -39,7 +49,14 @@ public class Entrada {
 			
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Ocorreu um erro ao receber mapas da caixa de entrada", e);
+		}
+		
+		if(nomesMateriasAdicionadas.isEmpty()){
+			logger.info("Nenhuma nova matéria na caixa de entrada");
+		} else {
+			int qtd = nomesMateriasAdicionadas.size();
+			logger.info(qtd + " nova(s) matéria(s): " + nomesMateriasAdicionadas);
 		}
 		
 	}
@@ -51,7 +68,7 @@ public class Entrada {
 			bw.write(materia.getName());		
 			Files.move(materia.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Ocorreu um erro ao transferir pastas com matérias para caixa diária", e);
 		}
 	}
 	
@@ -60,7 +77,9 @@ public class Entrada {
 		try {
 			Files.move(arquivo.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Ocorreu um erro ao outros tipos de arquivos", e);
 		}
 	}
+	
+	
 }
