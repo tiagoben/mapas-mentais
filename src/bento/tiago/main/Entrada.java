@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,7 +34,7 @@ public class Entrada {
 			
 			conteudoPastaEntrada.stream()
 				.filter(File::isDirectory)
-				.sorted(Comparator.comparingLong(File::lastModified))
+				.sorted((f1, f2) -> { return (int)(f1.listFiles()[0].lastModified()-f2.listFiles()[0].lastModified());})
 				.forEach((File materia) -> {
 					adicionarComoMateria(materia, bw);
 					nomesMateriasAdicionadas.add(materia.getName());

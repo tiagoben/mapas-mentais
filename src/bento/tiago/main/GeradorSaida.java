@@ -46,7 +46,8 @@ public class GeradorSaida {
 			LocalDate hoje = LocalDate.now();
 			Font fonte = new Font(Font.FontFamily.HELVETICA, 50);
 			String nomeArquivo = config.getPrefixoArquivoSaida()+hoje.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+".pdf";
-			PdfWriter.getInstance(pdfDoc, new FileOutputStream(saida.getAbsolutePath() + "\\" + nomeArquivo));
+			File arquivoPdf = new File(saida.getAbsolutePath() + "\\" + nomeArquivo);
+			PdfWriter.getInstance(pdfDoc, new FileOutputStream(arquivoPdf));
 			pdfDoc.open();
 	
 			
@@ -75,6 +76,7 @@ public class GeradorSaida {
 			
 			pdfDoc.close();
 			logger.info(listaArquivosImagens.size()+" mapas para hoje");
+			logger.info("Arquivo gerado: " + arquivoPdf.getAbsolutePath());
 		} catch (Exception e){
 			logger.error("Ocorreu um erro ao gerar o pdf", e);
 		}
