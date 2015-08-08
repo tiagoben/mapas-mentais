@@ -19,7 +19,7 @@ public class Controle {
 		
 		Config config = ConfigLoader.getConfig();
 		
-		if(existeMapaNaPastaDeSaida()){
+		if(config.isApenasUmArquivoSaida() && existeMapaNaPastaDeSaida()){
 			logger.warn("Você não leu seu último mapa! Remova o arquivo e execute novamente.");	
 		} else {
 			Entrada.receberMapas();

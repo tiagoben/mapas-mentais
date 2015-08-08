@@ -8,13 +8,14 @@ public class Config {
 	private String pastaCaixas = "./";
 	private String arquivoCatalogo = "catalogo.txt";
 	private String prefixoArquivoSaida = "";
+	private boolean apenasUmArquivoSaida = true;
 	private int maxLeituraDiaria = EnumCaixas.DIARIA.getMaxLeituras();
 	private int maxLeituraSemanal = EnumCaixas.SEMANAL.getMaxLeituras();
 	private int maxLeituraQuinzenal = EnumCaixas.QUINZENAL.getMaxLeituras();
 	private int maxLeituraMensal = EnumCaixas.MENSAL.getMaxLeituras();
 	private int maxLeituraSemestral = EnumCaixas.SEMESTRAL.getMaxLeituras();
 	private int maxLeituraAnual = EnumCaixas.ANUAL.getMaxLeituras();
-	
+
 	public String getPastaMetadados() {
 		return pastaMetadados;
 	}
@@ -56,6 +57,12 @@ public class Config {
 	}
 	public void setPrefixoArquivoSaida(String prefixoArquivoSaida) {
 		this.prefixoArquivoSaida = prefixoArquivoSaida;
+	}
+	public boolean isApenasUmArquivoSaida() {
+		return apenasUmArquivoSaida;
+	}
+	public void setApenasUmArquivoSaida(boolean apenasUmArquivoSaida) {
+		this.apenasUmArquivoSaida = apenasUmArquivoSaida;
 	}
 	public int getMaxLeituraDiaria() {
 		return maxLeituraDiaria;
