@@ -23,7 +23,7 @@ public class InicializadorCaixas {
 			
 			catalogo.stream()
 				.filter(item -> !nomesMateriais.contains(item))
-				.filter(item -> new File(caixa.getPasta()+"/"+item).isDirectory())
+				.filter(item -> new File(caixa.getPasta(), item).isDirectory())
 				.forEach(item ->{
 					Materia novaMateria = new Materia();
 					novaMateria.setNome(item);

@@ -17,12 +17,16 @@ public class Controle {
 	final static Logger logger = Logger.getLogger(Controle.class);
 	
 	public void run() {
+		new Log4jUtil().setLogFileInCurrentFolder();
+		
 		informacoesIniciais();
 		
 		Config config = ConfigLoader.getConfig();
 		
 		if(config.isApenasUmArquivoSaida() && existeMapaNaPastaDeSaida()){
 			logger.warn("Você não leu seu último mapa! Remova o arquivo e execute novamente.");	
+			File pastaSaida = FileUtil.getPasta(config.getPastaSaida());
+			logger.info(pastaSaida.getAbsolutePath());
 			String data = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			String nomeArquivo = config.getPrefixoArquivoSaida()+data+"-missed.txt";
 			FileUtil.getArquivo(config.getPastaSaida(), nomeArquivo);			
@@ -55,7 +59,6 @@ public class Controle {
 	private boolean existeMapaNaPastaDeSaida(){
 		Config config = ConfigLoader.getConfig();
 		File pastaSaida = FileUtil.getPasta(config.getPastaSaida());
-		
 		List<String> arquivos = Arrays.asList(pastaSaida.list());
 		
 		boolean match = arquivos.stream()

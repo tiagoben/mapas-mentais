@@ -2,6 +2,7 @@ package bento.tiago.main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,17 +20,26 @@ public class ConfigLoader {
 	
 	public static Config getConfig(){
 		if(config==null){
+			BufferedReader br = null;
 			try{
-				BufferedReader br;
-				br = new BufferedReader(new FileReader(ARQUIVO_CONFIG));
+				File arquivoConfig = FileUtil.getArquivo("./", ARQUIVO_CONFIG);
+				br = new BufferedReader(new FileReader(arquivoConfig));
 				config = new Gson().fromJson(br, Config.class);
+				config.getPastaCaixas();
 				br.close();
 			} catch (Exception e){
 				logger.info("Arquivo de configuração não encontrado. Carregando configuração padrão.");
 				config = criarConfiguracaoPadrao();
+			} finally {
+				try {
+					br.close();
+				} catch (IOException e) {
+					logger.error("Erro ao fechar arquivo", e);
+				}
 			}
 			
-			EnumCaixas.setCaminhoCaixas(config.getPastaCaixas());
+			String caminhoCaixas = FileUtil.getPasta(config.getPastaCaixas()).getAbsolutePath();
+			EnumCaixas.setCaminhoCaixas(caminhoCaixas);
 			
 			EnumCaixas.DIARIA.setMaxLeituras(config.getMaxLeituraDiaria());
 			EnumCaixas.SEMANAL.setMaxLeituras(config.getMaxLeituraSemanal());
@@ -48,7 +58,8 @@ public class ConfigLoader {
 		String jsonConfig = gson.toJson(config);
 		
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(ARQUIVO_CONFIG));
+			File arquivoConfig = FileUtil.getArquivo("./", ARQUIVO_CONFIG);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoConfig));
 			bw.write(jsonConfig);
 			bw.close();
 		} catch (IOException e) {

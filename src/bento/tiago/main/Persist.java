@@ -129,7 +129,7 @@ public class Persist {
 		Config config = ConfigLoader.getConfig();
 		
 		String caminho = config.getPastaMetadados() + "\\" + caixa.getArquivoMaterias();
-		File arquivo = new File(caminho);
+		File arquivo = FileUtil.getPasta(caminho);
 		
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo));
