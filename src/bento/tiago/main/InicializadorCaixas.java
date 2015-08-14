@@ -2,13 +2,12 @@ package bento.tiago.main;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class InicializadorCaixas {
 	public static void carregarMaterias(){
-		ArrayList<String> catalogo = Persist.getInstance().obterCatalogoPastas();
+		List<String> catalogo = Persist.getInstance().obterCatalogoPastas();
 
 		for (EnumCaixas caixa : EnumCaixas.values()) {
 			caixa.getListaMaterias().clear();
@@ -31,6 +30,8 @@ public class InicializadorCaixas {
 					novaMateria.setDataUltimaLeitura(LocalDate.now().minusDays(1));
 					materias.add(novaMateria);
 				});
+			
+			materias.sort( (m1, m2) -> catalogo.indexOf(m1.getNome()) - catalogo.indexOf(m2.getNome()) );
 			materias.forEach(m -> caixa.addMateria(m));
 		}
 	}

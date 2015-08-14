@@ -34,7 +34,7 @@ public class Persist {
 		return persist;
 	}
 
-	public ArrayList<String> lerCatalogoPastas() {
+	public List<String> lerCatalogoPastas() {
 		Config config = ConfigLoader.getConfig();
 		
 		if (catalogoPastas == null) {
@@ -84,7 +84,7 @@ public class Persist {
 		}
 	}
 
-	public ArrayList<String> obterCatalogoPastas() {
+	public List<String> obterCatalogoPastas() {
 		if (catalogoPastas == null) {
 			return lerCatalogoPastas();
 		} else {
