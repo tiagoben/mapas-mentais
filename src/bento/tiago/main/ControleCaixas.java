@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +65,10 @@ public class ControleCaixas {
 		ArrayList<Materia> areaTransferencia = new ArrayList<Materia>();
 
 		List<Materia> materiasOrigem = caixaOrigem.getListaMaterias();
-
+		
 		for (Materia m : materiasOrigem) {
-			if (m.getQtdLeitura() >= maxLeitura) {
+			if (m.getQtdLeitura() >= maxLeitura && 
+					m.getDataUltimaLeitura().isBefore(LocalDate.now())) {
 				areaTransferencia.add(m);
 			}
 		}
