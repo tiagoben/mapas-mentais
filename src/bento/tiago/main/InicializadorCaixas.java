@@ -31,7 +31,7 @@ public class InicializadorCaixas {
 					materias.add(novaMateria);
 				});
 			
-			materias.sort( (m1, m2) -> catalogo.indexOf(m2.getNome()) - catalogo.indexOf(m1.getNome()) );
+			materias.sort( (m1, m2) -> catalogo.indexOf(m1.getNome()) - catalogo.indexOf(m2.getNome()) );
 			materias.forEach(m -> caixa.addMateria(m));
 		}
 	}
